@@ -16,7 +16,7 @@
     <div class="signup">
       <img src="img/signup_bg.jpg" alt="signup image" class="signup__img" />
 
-      <form action="" class="signup__form">
+      <form action="/signup" method="POST" class="signup__form">
         <h1 class="signup__title">Sign-Up</h1>
 
         <div class="signup__content">
@@ -26,6 +26,7 @@
             <div class="signup__box-input">
               <input
                 type="email"
+                name="email"
                 required
                 class="signup__input"
                 id="signup-email"
@@ -41,6 +42,7 @@
             <div class="signup__box-input">
               <input
                 type="password"
+                name="password"
                 required
                 class="signup__input"
                 id="signup-pass"
