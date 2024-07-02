@@ -11,7 +11,7 @@
   --body-font: "Poppins", sans-serif;
   --h1-font-size: 1.75rem;
   --normal-font-size: 1rem;
-  --small-font-size: .813rem;
+  --small-font-size: 0.813rem;
   /*========== Font weight ==========*/
   --font-medium: 500;
 }
@@ -78,7 +78,8 @@ img {
   font-weight: var(--font-medium);
   margin-bottom: 2rem;
 }
-.login__content, .login__box {
+.login__content,
+.login__box {
   display: grid;
 }
 .login__content {
@@ -91,7 +92,8 @@ img {
   column-gap: 0.75rem;
   border-bottom: 2px solid var(--white-color);
 }
-.login__icon, .login__eye {
+.login__icon,
+.login__eye {
   font-size: 1.25rem;
 }
 .login__input {
@@ -122,7 +124,8 @@ img {
 .login__box:nth-child(2) input {
   padding-right: 1.8rem;
 }
-.login__check, .login__check-group {
+.login__check,
+.login__check-group {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -130,7 +133,9 @@ img {
 .login__check {
   margin-bottom: 1.5rem;
 }
-.login__check-label, .login__forgot, .login__register {
+.login__check-label,
+.login__forgot,
+.login__register {
   font-size: var(--small-font-size);
 }
 .login__check-group {
@@ -178,6 +183,12 @@ img {
   font-size: var(--small-font-size);
 }
 
+.error-message {
+  color: red;
+  font-size: var(--small-font-size);
+  text-align: center;
+  margin-top: 1rem;
+}
 /*=============== BREAKPOINTS ===============*/
 /* For medium devices */
 @media screen and (min-width: 576px) {

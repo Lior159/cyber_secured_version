@@ -23,7 +23,7 @@ async function connectToDatabase(onSuccess) {
     }
     return pool;
   } catch (err) {
-    console.error("Database connection failed: ", err);
+    console.error("Database connection failed: ", err.message);
     throw err;
   }
 }

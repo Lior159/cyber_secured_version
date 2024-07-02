@@ -1,18 +1,27 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
+const sql = require("mssql");
 const loginRouter = require("./routes/login");
 const signupRouter = require("./routes/signup");
-const { connectToDatabase } = require("./db");
+const authRouter = require("./routes/auth");
+const { connectToDatabase, getPool } = require("./db");
+const {
+  passwordValidation,
+  encryptPassword,
+  validatePassword,
+} = require("./pass_config");
 
 const app = express();
+
+app.set("view engine", "ejs");
+app.set("views", "views");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use(loginRouter);
-app.use(signupRouter);
+app.use(authRouter);
 
 connectToDatabase()
   .then(() => {

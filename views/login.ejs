@@ -4,8 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
-      href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
       rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
     />
     <link rel="stylesheet" href="/css/login_styles.css" />
 
@@ -16,28 +19,32 @@
     <div class="login">
       <img src="/img/login-bg.png" alt="login image" class="login__img" />
 
-      <form action="/login" method="POST" class="login__form">
+      <form
+        action="/login"
+        method="POST"
+        class="login__form"
+        autocomplete="off"
+      >
         <h1 class="login__title">Login</h1>
 
         <div class="login__content">
           <div class="login__box">
-            <i class="ri-user-3-line login__icon"></i>
-
+            <i class="fa-solid fa-user login__icon"></i>
             <div class="login__box-input">
               <input
-                type="email"
-                name="email"
+                type="text"
+                name="uname"
                 required
                 class="login__input"
-                id="login-email"
+                id="login-uname"
                 placeholder=" "
               />
-              <label for="login-email" class="login__label">Email</label>
+              <label for="login-uname" class="login__label">Username</label>
             </div>
           </div>
 
           <div class="login__box">
-            <i class="ri-lock-2-line login__icon"></i>
+            <i class="fa-solid fa-lock signup__icon login__icon"></i>
 
             <div class="login__box-input">
               <input
@@ -49,7 +56,7 @@
                 placeholder=" "
               />
               <label for="login-pass" class="login__label">Password</label>
-              <i class="ri-eye-off-line login__eye" id="login-eye"></i>
+              <i class="fa-solid fa-eye-slash login__eye" id="login-eye"></i>
             </div>
           </div>
         </div>
@@ -70,7 +77,11 @@
         </div>
 
         <button type="submit" class="login__button">Login</button>
-
+        <% if (typeof errorMessage !== 'undefined' ) { %>
+        <div class="error-message">
+          <p><%= errorMessage %></p>
+        </div>
+        <% } %>
         <p class="login__register">
           Don't have an account? <a href="/signup">Register</a>
         </p>

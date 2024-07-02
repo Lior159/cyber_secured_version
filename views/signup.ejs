@@ -4,8 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
-      href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
       rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
     />
     <link rel="stylesheet" href="css/signup_styles.css" />
 
@@ -16,13 +19,32 @@
     <div class="signup">
       <img src="img/signup_bg.jpg" alt="signup image" class="signup__img" />
 
-      <form action="/signup" method="POST" class="signup__form">
+      <form
+        action="/signup"
+        method="POST"
+        class="signup__form"
+        autocomplete="off"
+      >
         <h1 class="signup__title">Sign-Up</h1>
 
         <div class="signup__content">
           <div class="signup__box">
-            <i class="ri-user-3-line signup__icon"></i>
+            <i class="fa-solid fa-user signup__icon"></i>
+            <div class="signup__box-input">
+              <input
+                type="text"
+                name="uname"
+                required
+                class="signup__input"
+                id="signup-uname"
+                placeholder=" "
+              />
+              <label for="signup-uname" class="signup__label">Username</label>
+            </div>
+          </div>
 
+          <div class="signup__box">
+            <i class="fa-solid fa-envelope signup__icon"></i>
             <div class="signup__box-input">
               <input
                 type="email"
@@ -37,8 +59,7 @@
           </div>
 
           <div class="signup__box">
-            <i class="ri-lock-2-line signup__icon"></i>
-
+            <i class="fa-solid fa-lock signup__icon"></i>
             <div class="signup__box-input">
               <input
                 type="password"
@@ -49,12 +70,18 @@
                 placeholder=" "
               />
               <label for="signup-pass" class="signup__label">Password</label>
-              <i class="ri-eye-off-line signup__eye" id="signup-eye"></i>
+              <i class="fa-solid fa-eye-slash signup__eye" id="signup-eye"></i>
             </div>
           </div>
         </div>
 
         <button type="submit" class="signup__button">signup</button>
+
+        <% if (typeof errorMessage !== 'undefined' ) { %>
+        <div class="error-message">
+          <p><%= errorMessage %></p>
+        </div>
+        <% } %>
       </form>
     </div>
 

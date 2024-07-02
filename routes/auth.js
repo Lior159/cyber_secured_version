@@ -20,4 +20,8 @@ router.post("/login", async (req, res) => {
   console.log(result);
 });
 
+router.get("/signup", authController.getSignupPage);
+
+router.post("/signup", authController.signUp);
+
 module.exports = router;
