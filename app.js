@@ -21,14 +21,14 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: new MSSQLStore(config, {
-      ttl: 1000 * 60 * 10,
+      ttl: 1000 * 60 * 60,
       autoRemoveInterval: 1000 * 60,
       autoRemove: true,
     }),
     cookie: {
       // secure - for https,
       httpOnly: true,
-      maxAge: 1000 * 60 * 10,
+      maxAge: 1000 * 60 * 60,
     },
   })
 );

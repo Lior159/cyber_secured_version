@@ -24,3 +24,13 @@ const showHiddenPass = (loginPass, loginEye) => {
 };
 
 showHiddenPass("login-pass", "login-eye");
+
+/*=============== Menu ===============*/
+document.querySelector(".menu__button").addEventListener("click", () => {
+  const menuContent = document.querySelector(".menu__content");
+  if (menuContent.style.display === "none" || !menuContent.style.display) {
+    menuContent.style.display = "flex";
+  } else {
+    menuContent.style.display = "none";
+  }
+});

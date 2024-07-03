@@ -189,6 +189,50 @@ img {
   text-align: center;
   margin-top: 1rem;
 }
+
+/* Menu styles */
+.menu {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.menu__button {
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--white-color);
+}
+
+.menu__content {
+  display: none;
+  flex-direction: column;
+  background-color: hsla(0, 0%, 10%, 0.7);
+  border: 2px solid var(--white-color);
+  border-radius: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+}
+
+.menu__content a {
+  color: var(--white-color);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  font-size: var(--normal-font-size);
+}
+
+.menu__content a:hover {
+  background-color: hsla(0, 0%, 20%, 0.7);
+  border-radius: 0.5rem;
+}
+
+/* Show menu on hover */
+.menu:hover .menu__content {
+  display: flex;
+}
+
 /*=============== BREAKPOINTS ===============*/
 /* For medium devices */
 @media screen and (min-width: 576px) {

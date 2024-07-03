@@ -25,3 +25,13 @@ const showHiddenPass = (signupPass, signupEye) => {
 
 showHiddenPass("signup-pass", "signup-eye");
 showHiddenPass("signup-new-pass", "signup-new-eye");
+
+/*=============== Menu ===============*/
+document.querySelector(".menu__button").addEventListener("click", () => {
+  const menuContent = document.querySelector(".menu__content");
+  if (menuContent.style.display === "none" || !menuContent.style.display) {
+    menuContent.style.display = "flex";
+  } else {
+    menuContent.style.display = "none";
+  }
+});

@@ -15,8 +15,12 @@ const validatePassword = (password, passwordsHistory) => {
     return `Invalid length - must be at least 8 characters.`;
   }
 
-  if (passwordsHistory && passwordsHistory.includes(password)) {
-    return `Your new password cannot be the same as your previous passwords.`;
+  if (passwordsHistory) {
+    for (i of passwordsHistory) {
+      if (verifyPassword(password, i)) {
+        return `Your new password cannot be the same as your previous passwords.`;
+      }
+    }
   }
 
   if (!passwordRules.pattern.test(password)) {
@@ -34,6 +38,7 @@ const encryptPassword = async (password) => {
   try {
     const saltRounds = 10;
     const salt = await bcrypt.genSalt(saltRounds);
+    console.log(salt);
     const hash = await bcrypt.hash(password, salt);
     return {
       salt: salt,

@@ -25,7 +25,9 @@ const login = async (req, res) => {
   const db_res = await getPool()
     .request()
     .input("uname", sql.VarChar, uname)
-    .query(`SELECT password FROM Users WHERE uname = @uname`);
+    .query(
+      `SELECT password FROM Users WHERE uname = @uname AND status = 'active'`
+    );
 
   if (db_res.recordset.length === 0) {
     return res.render("login", {
@@ -34,9 +36,8 @@ const login = async (req, res) => {
   }
 
   const { password: hash } = db_res.recordset[0];
-  const isValidPassword = verifyPassword(password, hash);
 
-  if (!isValidPassword) {
+  if (!verifyPassword(password, hash)) {
     return res.render("login", {
       errorMessage: "Incorrect password. Please try again",
     });
@@ -102,6 +103,12 @@ const signUp = async (req, res) => {
   }
 };
 
+const logout = () => {
+  req.session.destroy(() => {
+    res.redirect("/login");
+  });
+};
+
 const isAuth = (req, res, next) => {
   if (!req.session.isAuth) {
     return res.redirect("/login");
@@ -115,4 +122,5 @@ module.exports = {
   login,
   signUp,
   isAuth,
+  logout,
 };
