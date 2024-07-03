@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const { encode } = require("html-entities");
 const {
-  passwordValidation,
+  verifyPassword,
   encryptPassword,
   validatePassword,
 } = require("../pass_config");
@@ -18,23 +18,48 @@ const getSignupPage = (req, res) => {
   res.render("signup");
 };
 
-const login = (req, res) => {
-  const uname = req.body.uname;
-  const password = req.body.password;
+const login = async (req, res) => {
+  const uname = encode(req.body.uname);
+  const password = encode(req.body.password);
+
+  const db_res = await getPool()
+    .request()
+    .input("uname", sql.VarChar, uname)
+    .query(`SELECT password FROM Users WHERE uname = @uname`);
+
+  if (db_res.recordset.length === 0) {
+    return res.render("login", {
+      errorMessage: "Username not found. Please try again",
+    });
+  }
+
+  const { password: hash } = db_res.recordset[0];
+  const isValidPassword = verifyPassword(password, hash);
+
+  if (!isValidPassword) {
+    return res.render("login", {
+      errorMessage: "Incorrect password. Please try again",
+    });
+  }
+
+  req.session.uname = uname;
+  req.session.isAuth = true;
+  await req.session.save();
+
+  res.redirect("/login");
 };
 
 const signUp = async (req, res) => {
   try {
-    const uname = req.body.uname;
-    const password = req.body.password;
-    const email = req.body.email;
+    const uname = encode(req.body.uname);
+    const password = encode(req.body.password);
+    const email = encode(req.body.email);
 
-    const validUname = validator.isAscii(uname);
+    const validUname = validator.isAlphanumeric(uname);
     const validPassword = validatePassword(password);
     const validEmail = validator.isEmail(email);
 
     if (validPassword) {
-      console.log(validPassword);
       return res.render("signup", {
         errorMessage: validPassword,
       });
@@ -52,31 +77,36 @@ const signUp = async (req, res) => {
       });
     }
 
-    const { hash, salt } = await encryptPassword("lior159");
+    const { hash } = await encryptPassword(password);
     const db_res = await getPool()
       .request()
       .input("uname", sql.VarChar, uname)
       .input("password", sql.VarChar, hash)
       .input("email", sql.VarChar, email)
-      .input("salt", sql.VarChar, salt)
       .query(
-        `INSERT INTO Users (uname, password, email) VALUES (@uname, @password, @email)
-        INSERT INTO Secrets (uname, salt) VALUES (@uname, @salt)
-        `
+        `IF NOT EXISTS (SELECT 1 FROM users WHERE uname = @uname)
+        BEGIN
+          INSERT INTO users (uname, password, email, date, status) VALUES (@uname, @password, @email, GETDATE(), 'active');
+        END`
       );
 
-    console.log(db_res);
-
-    return res.render("login");
-  } catch (error) {
-    if ((error.number = 2627)) {
-      res.render("signup", {
+    if (db_res.rowsAffected.length === 0) {
+      return res.render("signup", {
         errorMessage: "Username is already exist",
       });
     }
-    console.log(error.number);
-    console.log(error.message);
+
+    return res.render("login");
+  } catch (error) {
+    console.log(error);
   }
+};
+
+const isAuth = (req, res, next) => {
+  if (!req.session.isAuth) {
+    return res.redirect("/login");
+  }
+  next();
 };
 
 module.exports = {
@@ -84,4 +114,5 @@ module.exports = {
   getSignupPage,
   login,
   signUp,
+  isAuth,
 };

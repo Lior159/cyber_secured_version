@@ -1,16 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
-const sql = require("mssql");
-const loginRouter = require("./routes/login");
-const signupRouter = require("./routes/signup");
 const authRouter = require("./routes/auth");
-const { connectToDatabase, getPool } = require("./db");
-const {
-  passwordValidation,
-  encryptPassword,
-  validatePassword,
-} = require("./pass_config");
+const passRouter = require("./routes/pass");
+const { connectToDatabase, getPool, config } = require("./db");
+const session = require("express-session");
+const MSSQLStore = require("connect-mssql-v2");
 
 const app = express();
 
@@ -18,10 +13,28 @@ app.set("view engine", "ejs");
 app.set("views", "views");
 
 app.use(bodyParser.urlencoded({ extended: false }));
-
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: new MSSQLStore(config, {
+      ttl: 1000 * 60 * 10,
+      autoRemoveInterval: 1000 * 60,
+      autoRemove: true,
+    }),
+    cookie: {
+      // secure - for https,
+      httpOnly: true,
+      maxAge: 1000 * 60 * 10,
+    },
+  })
+);
+
 app.use(authRouter);
+app.use(passRouter);
 
 connectToDatabase()
   .then(() => {

@@ -33,6 +33,7 @@ function getPool() {
 }
 
 module.exports = {
+  config,
   connectToDatabase,
   getPool,
 };
