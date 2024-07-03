@@ -1,9 +1,10 @@
+require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
 const authRouter = require("./routes/auth");
 const passRouter = require("./routes/pass");
-const { connectToDatabase, getPool, config } = require("./db");
+const { connectToDatabase, getPool, config } = require("./utils/db");
 const session = require("express-session");
 const MSSQLStore = require("connect-mssql-v2");
 

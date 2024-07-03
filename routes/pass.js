@@ -12,10 +12,12 @@ router.get(
 
 router.post("/update", authController.isAuth, passController.updatePassword);
 
-// router.post("/update", authController.login);
+router.get("/forgot", passController.getForgotPasswordPage);
 
-// router.get("/reset", authController.getSignupPage);
+router.post("/forgot", passController.sendOTP);
 
-// router.post("/reset", authController.signUp);
+router.get("/reset/:uname", passController.getResetPasswordPage);
+
+router.post("/reset", passController.setNewPassword);
 
 module.exports = router;

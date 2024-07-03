@@ -25,11 +25,11 @@
         </div>
         <div class="menu__content">
           <a href="/logout" class="menu__item">Logout</a>
-          <a href="/update-password" class="menu__item">Update Password</a>
+          <a href="/update" class="menu__item">Update Password</a>
           <a href="/create-customer" class="menu__item">Create Customer</a>
         </div>
       </div>
-      
+
       <form
         action="/login"
         method="POST"
@@ -84,7 +84,7 @@
             >
           </div>
 
-          <a href="#" class="login__forgot">Forgot Password?</a>
+          <a href="/forgot" class="login__forgot">Forgot Password?</a>
         </div>
 
         <button type="submit" class="login__button">Login</button>
@@ -93,7 +93,6 @@
           <p><%= errorMessage %></p>
         </div>
         <% } %>
-        </br>
         <p class="login__register">
           Don't have an account? <a href="/signup">Register</a>
         </p>

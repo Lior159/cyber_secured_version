@@ -1,13 +1,11 @@
-const express = require("express");
-const path = require("path");
-const { encode } = require("html-entities");
 const {
   verifyPassword,
   encryptPassword,
   validatePassword,
-} = require("../pass_config");
+} = require("../utils/pass_config");
+const { getPool } = require("../utils/db");
+const { encode } = require("html-entities");
 const sql = require("mssql");
-const { getPool } = require("../db");
 const validator = require("validator");
 
 const getLoginPage = (req, res) => {
@@ -103,7 +101,7 @@ const signUp = async (req, res) => {
   }
 };
 
-const logout = () => {
+const logout = (req, res) => {
   req.session.destroy(() => {
     res.redirect("/login");
   });

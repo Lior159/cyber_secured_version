@@ -187,7 +187,8 @@ img {
   color: red;
   font-size: var(--small-font-size);
   text-align: center;
-  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
 }
 
 /* Menu styles */
