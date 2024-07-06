@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Customer Information</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="css/create_customer_styles.css" />
+  </head>
+  <body>
+    <div class="menu">
+      <div class="menu__button">
+        <i class="fa-solid fa-bars"></i>
+      </div>
+      <div class="menu__content">
+        <a href="/logout" class="menu__item">Logout</a>
+        <a href="/update" class="menu__item">Update Password</a>
+        <a href="/create_customer" class="menu__item">Create Customer</a>
+      </div>
+    </div>
+    <section class="container">
+      <header>Customer Information</header>
+      <div class="form">
+        <div class="input-box">
+          <div class="column">
+            <div class="input-box">
+              <label class="title">Full Name:</label>
+              <p><%= full_name %></p>
+            </div>
+            <div class="input-box">
+              <label><b>ID:</b></label>
+              <p><%= id %></p>
+            </div>
+          </div>
+        </div>
+        <div class="input-box">
+          <label><b>Email Address:</b></label>
+          <p><%= email %></p>
+        </div>
+        <div class="column">
+          <div class="input-box">
+            <label><b>Phone Number:</b></label>
+            <p><%= phone %></p>
+          </div>
+          <div class="input-box">
+            <label><b>Birth Date:</b></label>
+            <p><%= birth_date %></p>
+          </div>
+        </div>
+        <div class="gender-box">
+          <h3><b>Gender:</b></h3>
+          <p><%= gender %></p>
+        </div>
+        <div class="input-box address">
+          <label><b>Address:</b></label>
+          <div>
+            <p><b>Street:</b> <%= street %></p>
+            <p><b>City:</b> <%= city %></p>
+            <p><b>Postal Code:</b> <%= post_code %></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

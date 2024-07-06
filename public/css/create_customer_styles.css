@@ -1,0 +1,240 @@
+/* Import Google font - Poppins */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+/*=============== VARIABLES CSS ===============*/
+:root {
+  --white-color: hsl(0, 0%, 100%);
+  --black-color: hsl(0, 0%, 0%);
+  --body-font: "Poppins", sans-serif;
+  --h1-font-size: 1.75rem;
+  --normal-font-size: 1rem;
+  --small-font-size: 0.813rem;
+  --font-medium: 500;
+}
+
+/*=============== BASE ===============*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--body-font);
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: url("/img/new_customer_bg.jpg") no-repeat center center/cover;
+  color: var(--black-color);
+}
+
+input,
+button,
+select {
+  border: none;
+  outline: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/*=============== CONTAINER ===============*/
+.container {
+  position: relative;
+  max-width: 700px;
+  width: 100%;
+  background: hsla(0, 0%, 100%, 0.5);
+  padding: 25px;
+  border: 2px solid var(--white-color);
+  border-radius: 1rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8px);
+}
+
+.container header {
+  font-size: var(--h1-font-size);
+  font-weight: var(--font-medium);
+  text-align: center;
+  color: var(--black-color);
+}
+
+.container .form {
+  margin-top: 30px;
+}
+
+.form .input-box {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.input-box label {
+  color: var(--black-color);
+}
+
+.title {
+  font-weight: bold;
+}
+
+.form :where(.input-box input, .select-box) {
+  position: relative;
+  height: 50px;
+  width: 100%;
+  outline: none;
+  font-size: 1rem;
+  color: var(--black-color);
+  margin-top: 8px;
+  background: none;
+  border: 1px solid var(--white-color);
+  border-radius: 6px;
+  padding: 0 15px;
+}
+
+.input-box input[type="date"] {
+  color: var(--black-color);
+}
+
+.input-box input:focus {
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.form .column {
+  display: flex;
+  column-gap: 15px;
+}
+
+.form .gender-box {
+  margin-top: 20px;
+}
+
+.gender-box h3 {
+  color: var(--black-color);
+  font-size: 1rem;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+
+.form :where(.gender-option, .gender) {
+  display: flex;
+  align-items: center;
+  column-gap: 50px;
+  flex-wrap: wrap;
+}
+
+.form .gender {
+  column-gap: 5px;
+}
+
+.gender input {
+  accent-color: rgb(130, 106, 251);
+}
+
+.form :where(.gender input, .gender label) {
+  cursor: pointer;
+}
+
+.gender label {
+  color: var(--black-color);
+}
+
+.address :where(input, .select-box) {
+  margin-top: 15px;
+}
+
+.select-box select {
+  height: 100%;
+  width: 100%;
+  outline: none;
+  border: none;
+  color: var(--black-color);
+  font-size: 1rem;
+  background: none;
+}
+
+.form button {
+  height: 55px;
+  width: 100%;
+  color: var(--black-color);
+  font-size: 1rem;
+  font-weight: 400;
+  margin-top: 30px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--white-color);
+  border-radius: 0.5rem;
+}
+
+.error-message {
+  color: red;
+  font-size: var(15px);
+  text-align: center;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+/* Menu styles */
+.menu {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.menu__button {
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--white-color);
+}
+
+.menu__content {
+  display: none;
+  flex-direction: column;
+  background-color: hsla(0, 0%, 10%, 0.7);
+  border: 2px solid var(--white-color);
+  border-radius: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+}
+
+.menu__content a {
+  color: var(--white-color);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  font-size: var(--normal-font-size);
+}
+
+.menu__content a:hover {
+  background-color: hsla(0, 0%, 20%, 0.7);
+  border-radius: 0.5rem;
+}
+
+/* Show menu on hover */
+.menu:hover .menu__content {
+  display: flex;
+}
+
+/* .form button:hover {
+  background: rgb(88, 56, 250);
+} */
+
+/*=============== BREAKPOINTS ===============*/
+/* Responsive */
+@media screen and (max-width: 500px) {
+  .form .column {
+    flex-wrap: wrap;
+  }
+
+  .form :where(.gender-option, .gender) {
+    row-gap: 15px;
+  }
+}

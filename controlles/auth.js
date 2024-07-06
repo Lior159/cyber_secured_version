@@ -2,7 +2,7 @@ const {
   verifyPassword,
   encryptPassword,
   validatePassword,
-} = require("../utils/pass_config");
+} = require("../utils/passwords");
 const { getPool } = require("../utils/db");
 const { encode } = require("html-entities");
 const sql = require("mssql");
@@ -43,9 +43,14 @@ const login = async (req, res) => {
 
   req.session.uname = uname;
   req.session.isAuth = true;
-  await req.session.save();
-
-  res.redirect("/login");
+  req.session.save((err) => {
+    if (err) {
+      console.error("Error saving session:", err);
+      // Handle the error as needed
+      return res.status(500).send("Internal Server Error");
+    }
+    res.redirect("/create_customer");
+  });
 };
 
 const signUp = async (req, res) => {
@@ -85,7 +90,7 @@ const signUp = async (req, res) => {
       .query(
         `IF NOT EXISTS (SELECT 1 FROM users WHERE uname = @uname)
         BEGIN
-          INSERT INTO users (uname, password, email, date, status) VALUES (@uname, @password, @email, GETDATE(), 'active');
+          INSERT INTO users (uname, password, email, created_at, status) VALUES (@uname, @password, @email, GETDATE(), 'active');
         END`
       );
 
@@ -109,6 +114,7 @@ const logout = (req, res) => {
 
 const isAuth = (req, res, next) => {
   if (!req.session.isAuth) {
+    console.log("not auth");
     return res.redirect("/login");
   }
   next();

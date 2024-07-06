@@ -1,6 +1,5 @@
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
-const crypto = require("crypto");
 
 const passwordRules = {
   pattern:
@@ -29,7 +28,7 @@ const validatePassword = (password, passwordsHistory) => {
   }
 
   for (i of passwordRules.dictionary) {
-    if (password.includes(i)) {
+    if (password === i) {
       return "Password is not allowed, it might be too common.";
     }
   }

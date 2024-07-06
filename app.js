@@ -4,7 +4,8 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const authRouter = require("./routes/auth");
 const passRouter = require("./routes/pass");
-const { connectToDatabase, getPool, config } = require("./utils/db");
+const managementRouter = require("./routes/management");
+const { connectToDatabase, config } = require("./utils/db");
 const session = require("express-session");
 const MSSQLStore = require("connect-mssql-v2");
 
@@ -36,10 +37,11 @@ app.use(
 
 app.use(authRouter);
 app.use(passRouter);
+app.use(managementRouter);
 
 connectToDatabase()
   .then(() => {
-    const port = process.env.PORT || 3000;
+    const port = process.env.SERVER_PORT || 3000;
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
     });

@@ -3,12 +3,11 @@ const {
   encryptPassword,
   validatePassword,
   sendEmail,
-} = require("../utils/pass_config");
+} = require("../utils/passwords");
 const { getPool } = require("../utils/db");
 const { encode } = require("html-entities");
 const sql = require("mssql");
 const otpGenerator = require("otp-generator");
-const validator = require("validator");
 
 const getPasswordUpdatePage = (req, res) => {
   res.render("update_password");
@@ -26,7 +25,7 @@ const updatePassword = async (req, res) => {
       .query(
         `SELECT TOP 3 password, status, email FROM users
       WHERE uname = @uname
-      ORDER BY date DESC 
+      ORDER BY created_at DESC 
       `
       );
 
@@ -67,7 +66,7 @@ const updatePassword = async (req, res) => {
         `UPDATE users
         SET status = 'inactive'
         WHERE uname = @uname AND status = 'active';
-        INSERT INTO users (uname, password, email, date, status) VALUES (@uname, @password, @email, GETDATE(), 'active');`
+        INSERT INTO users (uname, password, email, created_at, status) VALUES (@uname, @password, @email, GETDATE(), 'active');`
       );
 
     res.redirect("/login");
@@ -148,7 +147,7 @@ const setNewPassword = async (req, res) => {
     .query(
       `SELECT TOP 3 password, status, email,otp FROM users
       WHERE uname = @uname
-      ORDER BY date DESC 
+      ORDER BY created_at DESC 
       `
     );
 
@@ -190,7 +189,7 @@ const setNewPassword = async (req, res) => {
       `UPDATE users
         SET status = 'inactive'
         WHERE uname = @uname AND status = 'active';
-        INSERT INTO users (uname, password, email, date, status) VALUES (@uname, @password, @email, GETDATE(), 'active');`
+        INSERT INTO users (uname, password, email, created_at, status) VALUES (@uname, @password, @email, GETDATE(), 'active');`
     );
 
   res.redirect("/login");
