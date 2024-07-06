@@ -1,13 +1,6 @@
-const {
-  verifyPassword,
-  encryptPassword,
-  validatePassword,
-  sendEmail,
-} = require("../utils/passwords");
 const { getPool } = require("../utils/db");
 const { encode } = require("html-entities");
 const sql = require("mssql");
-const otpGenerator = require("otp-generator");
 const validator = require("validator");
 
 const getNewCustomerPage = (req, res) => {

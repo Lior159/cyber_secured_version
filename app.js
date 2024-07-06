@@ -1,13 +1,14 @@
+// -------- Imports --------
 require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
+const session = require("express-session");
+const MSSQLStore = require("connect-mssql-v2");
 const authRouter = require("./routes/auth");
 const passRouter = require("./routes/pass");
 const managementRouter = require("./routes/management");
 const { connectToDatabase, config } = require("./utils/db");
-const session = require("express-session");
-const MSSQLStore = require("connect-mssql-v2");
 
 const app = express();
 
@@ -28,7 +29,7 @@ app.use(
       autoRemove: true,
     }),
     cookie: {
-      // secure - for https,
+      // secure // used for https,
       httpOnly: true,
       maxAge: 1000 * 60 * 60,
     },
@@ -50,7 +51,6 @@ connectToDatabase()
     console.error("Failed to connect to the database. Server not started.");
   });
 
-// Graceful shutdown
 const shutdown = async () => {
   try {
     if (pool) {

@@ -1,12 +1,12 @@
+const { encode } = require("html-entities");
+const sql = require("mssql");
+const validator = require("validator");
+const { getPool } = require("../utils/db");
 const {
   verifyPassword,
   encryptPassword,
   validatePassword,
 } = require("../utils/passwords");
-const { getPool } = require("../utils/db");
-const { encode } = require("html-entities");
-const sql = require("mssql");
-const validator = require("validator");
 
 const getLoginPage = (req, res) => {
   res.render("login");
