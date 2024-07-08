@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
+const fs = require("fs");
 
 const passwordRules = {
   pattern:
@@ -7,7 +8,7 @@ const passwordRules = {
   length: 10,
   history: 3,
   loginAttempts: 3,
-  dictionary: ["1234567890"],
+  dictionary: fs.readFileSync("./dictionary.txt", "utf8").split(/\s+/),
 };
 
 const validatePassword = (password, passwordsHistory) => {
