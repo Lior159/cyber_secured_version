@@ -1,4 +1,4 @@
-# Communication Ltd Project
+# Communication Ltd Project - Secured Version
 
 Follow the instructions below to set up the project on your local machine.
 
