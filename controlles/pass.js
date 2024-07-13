@@ -72,6 +72,7 @@ const updatePassword = async (req, res) => {
     res.redirect("/login");
   } catch (error) {
     console.log(error);
+    res.status(500).send("Internavl server error");
   }
 };
 
@@ -124,7 +125,7 @@ const sendOTP = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    throw error;
+    res.status(500).send("Internavl server error");
   }
 };
 
@@ -137,62 +138,67 @@ const getResetPasswordPage = (req, res) => {
 };
 
 const setNewPassword = async (req, res) => {
-  const uname = encode(req.body.uname);
-  const inputOtp = encode(req.body.otp);
-  const newPassword = encode(req.body.newPassword);
+  try {
+    const uname = encode(req.body.uname);
+    const inputOtp = encode(req.body.otp);
+    const newPassword = encode(req.body.newPassword);
 
-  const db_res = await getPool()
-    .request()
-    .input("uname", sql.VarChar, uname)
-    .query(
-      `SELECT TOP 3 password, status, email,otp FROM users
+    const db_res = await getPool()
+      .request()
+      .input("uname", sql.VarChar, uname)
+      .query(
+        `SELECT TOP 3 password, status, email,otp FROM users
       WHERE uname = @uname
       ORDER BY created_at DESC 
       `
-    );
+      );
 
-  if (db_res.recordset.length === 0) {
-    return res.render("reset_password", {
-      uname,
-      errorMessage: "Invalid url - username not found",
-    });
-  }
+    if (db_res.recordset.length === 0) {
+      return res.render("reset_password", {
+        uname,
+        errorMessage: "Invalid url - username not found",
+      });
+    }
 
-  const email = db_res.recordset[0].email;
-  const [{ otp }] = db_res.recordset.filter((row) => row.status === "active");
-  const prevPasswords = db_res.recordset.map((row) => row.password);
+    const email = db_res.recordset[0].email;
+    const [{ otp }] = db_res.recordset.filter((row) => row.status === "active");
+    const prevPasswords = db_res.recordset.map((row) => row.password);
 
-  if (!otp || !verifyPassword(inputOtp, otp)) {
-    return res.render("reset_password", {
-      uname,
-      errorMessage: "Invalid OTP",
-    });
-  }
+    if (!otp || !verifyPassword(inputOtp, otp)) {
+      return res.render("reset_password", {
+        uname,
+        errorMessage: "Invalid OTP",
+      });
+    }
 
-  const isValidPassword = validatePassword(newPassword, prevPasswords);
+    const isValidPassword = validatePassword(newPassword, prevPasswords);
 
-  if (isValidPassword) {
-    return res.render("reset_password", {
-      uname,
-      errorMessage: isValidPassword,
-    });
-  }
+    if (isValidPassword) {
+      return res.render("reset_password", {
+        uname,
+        errorMessage: isValidPassword,
+      });
+    }
 
-  const { hash } = await encryptPassword(newPassword);
+    const { hash } = await encryptPassword(newPassword);
 
-  await getPool()
-    .request()
-    .input("uname", sql.VarChar, uname)
-    .input("password", sql.VarChar, hash)
-    .input("email", sql.VarChar, email)
-    .query(
-      `UPDATE users
+    await getPool()
+      .request()
+      .input("uname", sql.VarChar, uname)
+      .input("password", sql.VarChar, hash)
+      .input("email", sql.VarChar, email)
+      .query(
+        `UPDATE users
         SET status = 'inactive'
         WHERE uname = @uname AND status = 'active';
         INSERT INTO users (uname, password, email, created_at, status) VALUES (@uname, @password, @email, GETDATE(), 'active');`
-    );
+      );
 
-  res.redirect("/login");
+    res.redirect("/login");
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internavl server error");
+  }
 };
 
 module.exports = {

@@ -4,6 +4,8 @@ const authController = require("../controlles/auth");
 
 const router = express.Router();
 
+router.get("/", authController.isAuth, managementController.getNewCustomerPage);
+
 router.get(
   "/create_customer",
   authController.isAuth,

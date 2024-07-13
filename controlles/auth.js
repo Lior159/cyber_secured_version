@@ -17,40 +17,44 @@ const getSignupPage = (req, res) => {
 };
 
 const login = async (req, res) => {
-  const uname = encode(req.body.uname);
-  const password = encode(req.body.password);
+  try {
+    const uname = encode(req.body.uname);
+    const password = encode(req.body.password);
 
-  const db_res = await getPool()
-    .request()
-    .input("uname", sql.VarChar, uname)
-    .query(
-      `SELECT password FROM Users WHERE uname = @uname AND status = 'active'`
-    );
+    const db_res = await getPool()
+      .request()
+      .input("uname", sql.VarChar, uname)
+      .query(
+        `SELECT password FROM Users WHERE uname = @uname AND status = 'active'`
+      );
 
-  if (db_res.recordset.length === 0) {
-    return res.render("login", {
-      errorMessage: "Username not found. Please try again",
-    });
-  }
-
-  const { password: hash } = db_res.recordset[0];
-
-  if (!verifyPassword(password, hash)) {
-    return res.render("login", {
-      errorMessage: "Incorrect password. Please try again",
-    });
-  }
-
-  req.session.uname = uname;
-  req.session.isAuth = true;
-  req.session.save((err) => {
-    if (err) {
-      console.error("Error saving session:", err);
-      // Handle the error as needed
-      return res.status(500).send("Internal Server Error");
+    if (db_res.recordset.length === 0) {
+      return res.render("login", {
+        errorMessage: "Username not found. Please try again",
+      });
     }
-    res.redirect("/create_customer");
-  });
+
+    const { password: hash } = db_res.recordset[0];
+
+    if (!verifyPassword(password, hash)) {
+      return res.render("login", {
+        errorMessage: "Incorrect password. Please try again",
+      });
+    }
+
+    req.session.uname = uname;
+    req.session.isAuth = true;
+    req.session.save((err) => {
+      if (err) {
+        console.error("Error saving session:", err);
+        return res.status(500).send("Internal Server Error");
+      }
+      res.redirect("/create_customer");
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internavl server error");
+  }
 };
 
 const signUp = async (req, res) => {
@@ -103,19 +107,27 @@ const signUp = async (req, res) => {
     return res.render("login");
   } catch (error) {
     console.log(error);
+    res.status(500).send("Internavl server error");
   }
 };
 
 const logout = (req, res) => {
-  req.session.destroy(() => {
-    res.redirect("/login");
-  });
+  req.session.destroy(
+    (error) => {
+      console.log(error);
+      res.status(500).send("Internavl server error");
+    },
+    () => {
+      res.redirect("/login");
+    }
+  );
 };
 
 const isAuth = (req, res, next) => {
   if (!req.session.isAuth) {
-    console.log("not auth");
-    return res.redirect("/login");
+    return res.render("login", {
+      errorMessage: "You must login",
+    });
   }
   next();
 };
